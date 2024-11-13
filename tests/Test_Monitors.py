@@ -31,59 +31,92 @@ def read_monitor_info(filename : str) -> list:
 
   return monitors
 
-class TestMonitors(unittest.TestCase):
-  def test_xrandr_input(self):
-    """
-    Test the monitor parsing using 'tests/xrandr.txt'.
+class TestXrandrTxt(unittest.TestCase):
+    
+    def setUp(self):
+        """
+        Setup the test: read monitors from 'tests/xrandr.txt' and
+        store them in the 'monitors' attribute.
+        """
+        self.monitors = read_monitor_info("tests/xrandr.txt")
 
-    This test verifies that the Monitors object is correctly
-    instantiated and populated with data from 'tests/xrandr.txt'.
-    It checks that:
-    - The Monitors instance is not None and of type Monitors.
-    - The number of monitors parsed is 2.
-    - The default monitor geometry matches the expected
-      value ("1920x1080+0+0").
-    - The largest monitor geometry matches the expected
-      value ("2560x1440+1920+0").
-    """
-    monitors = read_monitor_info("tests/xrandr.txt")
-    self.assertIsNotNone(monitors)
-    self.assertIsInstance(monitors, Monitors)
+    def test_xrandr_input(self):
+        """
+        Test the monitor parsing using 'tests/xrandr.txt'.
 
-    num_monitors = monitors.get_num_monitors()
-    self.assertEqual(num_monitors, 2)
+        This test verifies that the Monitors object is correctly
+        instantiated and populated with data from 'tests/xrandr.txt'.
+        """
+        self.assertIsNotNone(self.monitors)
+        self.assertIsInstance(self.monitors, Monitors)
 
-    default_monitor = monitors.get_default_monitor()
-    self.assertEqual(default_monitor, "1920x1080+0+0")
+    def test_xrandr_input_has_two_monitors(self):
+        """
+        Verify that two monitors are found in 'tests/xrandr.txt'.
+        """
+        num_monitors = self.monitors.get_num_monitors()
+        self.assertEqual(num_monitors, 2)
 
-    largest_monitor = monitors.get_largest_monitor()
-    self.assertEqual(largest_monitor, "2560x1440+1920+0")
+    def test_xrandr_default_monitor(self):
+        """
+        Verify that the default monitor geometry matches the expected
+        value ("1920x1080+0+0").
+        """
+        default_monitor = self.monitors.get_default_monitor()
+        self.assertEqual(default_monitor, "1920x1080+0+0")
 
-  def test_xrandr1_input(self):
-    """
-    Test the monitor parsing using 'tests/xrandr1.txt'.
+    def test_xrandr_largest_monitor(self):
+        """
+        Verify that the largest monitor geometry matches the expected
+        value ("2560x1440+1920+0").
+        """
+        largest_monitor = self.monitors.get_largest_monitor()
+        self.assertEqual(largest_monitor, "2560x1440+1920+0")
 
-    This test verifies that the Monitors object is correctly
-    instantiated and populated with data from 'tests/xrandr1.txt'.
-    It checks that:
-    - The Monitors instance is not None and of type Monitors.
-    - The number of monitors parsed is 1.
-    - The default and largest monitor geometries match the expected
-      values ("2560x1440+1920+0").
-    """
-    monitors = read_monitor_info("tests/xrandr1.txt")
-    self.assertIsNotNone(monitors)
-    self.assertIsInstance(monitors, Monitors)
 
-    num_monitors = monitors.get_num_monitors()
-    self.assertEqual(num_monitors, 1)
+class TestXrandr1Txt(unittest.TestCase):
+    
+    def setUp(self):
+        """
+        Setup the test: read monitors from 'tests/xrandr1.txt' and
+        store them in the 'monitors' attribute.
+        """
+        self.monitors = read_monitor_info("tests/xrandr1.txt")
 
-    default_monitor = monitors.get_default_monitor()
-    single_monitor = "2560x1440+1920+0"
-    self.assertEqual(default_monitor, single_monitor)
+    def test_xrandr1_input(self):
+        """
+        Test the monitor parsing using 'tests/xrandr1.txt'.
 
-    largest_monitor = monitors.get_largest_monitor()
-    self.assertEqual(largest_monitor, single_monitor)
+        This test verifies that the Monitors object is correctly
+        instantiated and populated with data from 'tests/xrandr1.txt'.
+        """
+        self.assertIsNotNone(self.monitors)
+        self.assertIsInstance(self.monitors, Monitors)
+
+    def test_xrandr1_input_has_one_monitor(self):
+        """
+        Verify that one monitor is found in 'tests/xrandr1.txt'.
+        """
+        num_monitors = self.monitors.get_num_monitors()
+        self.assertEqual(num_monitors, 1)
+
+    def test_xrandr1_default_monitor(self):
+        """
+        Verify that the default monitor geometry matches the expected
+        value ("2560x1440+1920+0").
+        """
+        default_monitor = self.monitors.get_default_monitor()
+        single_monitor = "2560x1440+1920+0"
+        self.assertEqual(default_monitor, single_monitor)
+
+    def test_xrandr1_largest_monitor(self):
+        """
+        Verify that the largest monitor geometry matches the expected
+        value ("2560x1440+1920+0").
+        """
+        largest_monitor = self.monitors.get_largest_monitor()
+        single_monitor = "2560x1440+1920+0"
+        self.assertEqual(largest_monitor, single_monitor)
 
 if __name__ == '__main__':
-  unittest.main()
+  unittest.main(verbosity=1)
